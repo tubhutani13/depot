@@ -1,0 +1,18 @@
+<%# This script will be executed on client side on browser
+  However, the code between ruby delimiters will be executed on server first,
+  converted into javascript format and sent back to client
+ %>
+
+cart = document.getElementById("cart");
+
+<%# Output of render method processed by escape_javascript helper method
+  which converts Ruby string into format aceeptable as input to Javascript
+ %>
+cart.innerHTML = "<%= j render(@cart) %>"
+
+<%# Removing notice element when new item added if it exists %>
+notice - document.getElementById("notice")
+if (notice) {
+  notice.style.display = "none";
+}
+
