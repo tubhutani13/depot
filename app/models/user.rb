@@ -7,6 +7,9 @@ class User < ApplicationRecord
   ## Creating Transaction/Trigger that will rollback when last user deleted
   after_destroy :ensure_an_admin_remains
 
+  validates :email, uniqueness: true , format:{
+    with: EMAIL_REGEX
+  }
   class Error < StandardError
   end
 
