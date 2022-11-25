@@ -14,9 +14,9 @@ class Product < ApplicationRecord
 
   # Adding validation related to price being positive number
   validates :price, numericality: { greater_than_or_equal_to: 0.01 }, comparison: {
-                      greater_than: :discount_price,
-                      message: "must be greater than discount price",
-                    }, allow_blank: true
+            greater_than: :discount_price,
+            message: "must be greater than discount price",
+          }, allow_blank: true
 
   # Validation for title being unique
   validates :title, uniqueness: true
@@ -35,8 +35,12 @@ class Product < ApplicationRecord
             image_url: true,
             allow_blank: true
 
+  before_validation :default_title_value
+  before_validation :default_discount_price
+
   private def ensure_not_referenced_by_any_line_item
     unless line_items.empty?
+      # same object used by validations to store errors
       errors.add(:base, "Line Items present")
 
       throw :abort
@@ -49,5 +53,13 @@ class Product < ApplicationRecord
 
   private def permalink_length_without_hyphen
     permalink.split("-").length
+  end
+
+  private def default_title_value
+    self.title ||= "abc"
+  end
+
+  private def default_discount_value
+    self.discount_price ||= self.price
   end
 end
