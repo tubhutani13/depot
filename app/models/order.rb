@@ -14,6 +14,7 @@ class Order < ApplicationRecord
   # validating key types as user can still submit form directly from outside 
   validates :pay_type, inclusion: pay_types.keys
 
+  scope :by_date, ->(from = Time.now.midnight, to = Time.now ){where(created_at: (from..to))}
   def add_line_items_from_cart(cart)
     cart.line_items.each do |item|
       # Setting item cart_id to nil to prevent it from deleted when cart deleted

@@ -38,14 +38,9 @@ class Product < ApplicationRecord
   before_validation :default_title_value
   before_validation :default_discount_price
 
-  private def ensure_not_referenced_by_any_line_item
-    unless line_items.empty?
-      # same object used by validations to store errors
-      errors.add(:base, "Line Items present")
-
-      throw :abort
-    end
-  end
+  scope :enabled_products, -> { where(enabled: true) }
+  scope :product_ordered, -> { joins(:line_items).distinct }
+  scope :ordered_titles, -> { product_ordered.pluck(:title) }
 
   private def words_in_description
     description.scan(DESCRIPTION_WORDS_REGEX)
