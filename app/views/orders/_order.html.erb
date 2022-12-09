@@ -1,22 +1,36 @@
-<div id="<%= dom_id order %>">
+<div id="<%= dom_id order %>",class="order">
   <p>
     <strong>Name:</strong>
     <%= order.name %>
   </p>
-
   <p>
     <strong>Address:</strong>
     <%= order.address %>
   </p>
-
   <p>
     <strong>Email:</strong>
     <%= order.email %>
   </p>
-
   <p>
     <strong>Pay type:</strong>
     <%= order.pay_type %>
   </p>
-
+</div>
+<h3><u>Line Items</u></h3>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Total Price</th>
+    </tr>
+  </thead>
+  <%= render(order.line_items) %>
+  <tfoot>
+    <tr>
+      <th colspan="2">Total: </th>
+      <td class="price"><%= order_total(order) %></td>
+    </tr>
+  </tfoot>
+</table>
 </div>

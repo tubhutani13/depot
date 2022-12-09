@@ -1,11 +1,11 @@
 class Product < ApplicationRecord
-  has_many :line_items
+  PERMALINK_REGEX = /\A[a-z0-9-]+\z/i.freeze
+  DESCRIPTION_WORDS_REGEX = /[a-z0-9]+/i.freeze
+
+  has_many :line_items, dependent: :restrict_with_error
   # specifying indirect relationship through another entity
   has_many :orders, through: :line_items
-
-  before_destroy :ensure_not_referenced_by_any_line_item
-
-  # Adding validation related to Product text field for not being empty
+  has_many :carts, through: :line_items
   validates :title, :description, :image_url, :price, :discount_price, presence: true
 
   validates :discount_price,
@@ -38,15 +38,6 @@ class Product < ApplicationRecord
   before_validation :default_title_value
   before_validation :default_discount_price
 
-  private def ensure_not_referenced_by_any_line_item
-    unless line_items.empty?
-      # same object used by validations to store errors
-      errors.add(:base, "Line Items present")
-
-      throw :abort
-    end
-  end
-
   private def words_in_description
     description.scan(DESCRIPTION_WORDS_REGEX)
   end
@@ -56,7 +47,7 @@ class Product < ApplicationRecord
   end
 
   private def default_title_value
-    self.title ||= 'abc'
+    self.title ||= "abc"
   end
 
   private def default_discount_value
