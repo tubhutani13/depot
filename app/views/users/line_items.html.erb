@@ -1,0 +1,12 @@
+<h3><u>Line Items</u></h3>
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Quantity</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Total Price</th>
+    </tr>
+  </thead>
+  <%= render @line_items %>
+</table>
+<%= paginate @line_items %>

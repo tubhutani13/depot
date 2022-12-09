@@ -1,6 +1,7 @@
 require 'pago'
 
 class Order < ApplicationRecord
+  belongs_to :user
   has_many :line_items, dependent: :destroy
 
   # Adding enum data-type for pay_type column

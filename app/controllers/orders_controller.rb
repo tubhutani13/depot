@@ -35,7 +35,7 @@ class OrdersController < ApplicationController
 
   # POST /orders or /orders.json
   def create
-    @order = Order.new(order_params)
+    @order = current_user.orders.build(order_params)
     # Adding items from current cart to order
     @order.add_line_items_from_cart(@cart)
 
@@ -43,7 +43,6 @@ class OrdersController < ApplicationController
       if @order.save
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
-        # Sending the method as background job
         ChargeOrderJob.perform_later(@order, pay_type_params.to_h)
 
         format.html { redirect_to store_index_url, notice: "Thank you for your order." }
