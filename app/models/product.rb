@@ -35,8 +35,12 @@ class Product < ApplicationRecord
             image_url: true,
             allow_blank: true
 
+  before_validation :default_title_value
+  before_validation :default_discount_price
+
   private def ensure_not_referenced_by_any_line_item
     unless line_items.empty?
+      # same object used by validations to store errors
       errors.add(:base, "Line Items present")
 
       throw :abort
@@ -49,5 +53,13 @@ class Product < ApplicationRecord
 
   private def permalink_length_without_hyphen
     permalink.split("-").length
+  end
+
+  private def default_title_value
+    self.title ||= 'abc'
+  end
+
+  private def default_discount_value
+    self.discount_price ||= self.price
   end
 end
