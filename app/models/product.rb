@@ -1,9 +1,3 @@
-class ImageUrlValidator < ActiveModel::EachValidator
-  def validate_each(record, attribute, value)
-    record.errors.add attribute, "has invalid Image URL" if value !~ IMAGE_URL_REGEX
-  end
-end
-
 class Product < ApplicationRecord
   has_many :line_items
   # specifying indirect relationship through another entity
