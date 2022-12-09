@@ -1,3 +1,9 @@
+class ImageUrlValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    record.errors.add attribute, "has invalid Image URL" if value !~ IMAGE_URL_REGEX
+  end
+end
+
 class Product < ApplicationRecord
   has_many :line_items
   # specifying indirect relationship through another entity
@@ -14,9 +20,9 @@ class Product < ApplicationRecord
 
   # Adding validation related to price being positive number
   validates :price, numericality: { greater_than_or_equal_to: 0.01 }, comparison: {
-            greater_than: :discount_price,
-            message: "must be greater than discount price",
-          }, allow_blank: true
+                      greater_than: :discount_price,
+                      message: "must be greater than discount price",
+                    }, allow_blank: true
 
   # Validation for title being unique
   validates :title, uniqueness: true
@@ -56,7 +62,7 @@ class Product < ApplicationRecord
   end
 
   private def default_title_value
-    self.title ||= "abc"
+    self.title ||= 'abc'
   end
 
   private def default_discount_value
