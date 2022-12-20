@@ -18,15 +18,8 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    # This empty object is created so as to use in form partial template to make edits into
-    ## Reason @order object created twice, in new and create
-    # new method @order created in memory to simply give the template code something to work with
-    # Once response sent to browser, that object gets abandoned and eventually reaped by ruby garbage collector
-    # create action order object is created using post params and added to database after validation
-    # Hence, model objects have two role: they map data into and out database
-    # but also are regular objects that hold business data. They affect database when told to
-    
     @order = Order.new
+    @order.build_address
   end
 
   # GET /orders/1/edit
@@ -86,7 +79,7 @@ class OrdersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type)
+      params.require(:order).permit(:name, :email, :pay_type, address_attributes: [:state, :country, :city, :pincode])
     end
 
     # returns params relevant to chosen pay type

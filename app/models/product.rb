@@ -37,7 +37,7 @@ class Product < ApplicationRecord
             allow_blank: true
 
   before_validation :default_title_value
-  before_validation :default_discount_price
+  before_validation :default_discount_value
 
   after_create_commit :increment_parent_category_products_count, if: :category_parent_present?
   after_destroy_commit :decrement_parent_category_products_count, if: :category_parent_present?

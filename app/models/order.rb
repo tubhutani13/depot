@@ -2,7 +2,9 @@ require 'pago'
 
 class Order < ApplicationRecord
   has_many :line_items, dependent: :destroy
+  has_one :address, as: :addressable, dependent: :destroy
 
+  accepts_nested_attributes_for :address
   # Adding enum data-type for pay_type column
   enum pay_type: {
     "Check"           => 0,
@@ -10,7 +12,8 @@ class Order < ApplicationRecord
     "Purchase order"  => 2
   }
 
-  validates :name, :address, :email, presence: true
+  validates :name, :email, presence: true
+  validates :email, format: { with: EMAIL_REGEX }
   # validating key types as user can still submit form directly from outside 
   validates :pay_type, inclusion: pay_types.keys
 
