@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  belongs_to :category, counter_cache: true
   has_many :line_items
   # specifying indirect relationship through another entity
   has_many :orders, through: :line_items
@@ -38,6 +39,8 @@ class Product < ApplicationRecord
   before_validation :default_title_value
   before_validation :default_discount_price
 
+  after_create_commit :increment_parent_category_products_count, if: :category_parent_present?
+  after_destroy_commit :decrement_parent_category_products_count, if: :category_parent_present?
   scope :enabled_products, -> { where(enabled: true) }
   scope :product_ordered, -> { joins(:line_items).distinct }
   scope :ordered_titles, -> { product_ordered.pluck(:title) }
@@ -56,5 +59,17 @@ class Product < ApplicationRecord
 
   private def default_discount_value
     self.discount_price ||= self.price
+  end
+
+  private def increment_parent_category_products_count
+    category.parent.increment!(:products_count)
+  end
+
+  private def decrement_parent_category_products_count
+    category.parent.increment!(:products_count)
+  end
+
+  private def category_parent_present?
+    category.present? && category.parent.present?
   end
 end
