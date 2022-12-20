@@ -1,0 +1,11 @@
+<% @categories.each do |category| %>
+  <ul>
+    -> Category: <%= category.name %>
+    <% if category.sub_categories.present? %>
+      <h5>Sub Categories of <%= category.name %></h5>
+      <% category.sub_categories.each do |sub_category| %>
+        <li><%= sub_category.name %></li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>

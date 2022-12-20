@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   resources :orders
   resources :line_items
   resources :carts
-  
+  resources :categories
   # Creating Store as Root URL of App 
   # as: option creates store_index_path and store_index_url methods for tests
   # store#index specifying class and method to use for action request
