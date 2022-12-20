@@ -1,5 +1,9 @@
 class User < ApplicationRecord
+  has_many :orders, dependent: :destroy
+  has_many :line_items, through: :orders
+  has_one :address, as: :addressable, dependent: :destroy
   validates :name, presence: true, uniqueness: true
+  
 
   # Validates that the two passwords match in field
   has_secure_password
@@ -11,6 +15,7 @@ class User < ApplicationRecord
   after_create_commit :send_welcome_mail
 
   validates :email, uniqueness: true, format: { with: EMAIL_REGEX }
+  
 
   private def ensure_an_admin_remains
     if User.count.zero?
