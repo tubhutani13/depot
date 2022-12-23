@@ -9,42 +9,42 @@
       </ul>
     </div>
   <% end %>
-
   <div>
     <%= form.label :title %>
     <%= form.text_field :title %>
   </div>
-
   <div>
     <%= form.label :description %>
     <%= form.text_area :description, rows:10, cols: 60 %>
   </div>
-
+  <div>
+    <%= form.label :category_id %>
+    <%= form.select :category_id, @categories, include_blank: t('form.select.select_one') %>
+  </div>
   <div>
     <%= form.label :image_url %>
     <%= form.text_field :image_url %>
   </div>
-
+  <div>
+    <%= form.label :images, 'Product Images' %>
+    <%= form.file_field :images, accept: 'image/png,image/gif,image/jpg', multiple: true %>
+  </div>
   <div>
     <%= form.label :price %>
     <%= form.text_field :price %>
   </div>
-
   <div>
     <%= form.label :enabled %>
     <%= form.check_box :enabled %>
   </div>
-
   <div>
     <%= form.label :discount_price %>
     <%= form.number_field :discount_price %>
   </div>
-
   <div>
     <%= form.label :permalink %>
     <%= form.text_field :permalink %>
   </div>
-
   <div>
     <%= form.submit %>
   </div>
