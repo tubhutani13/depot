@@ -23,7 +23,8 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
-
+    @user.build_hit_count
+    
     respond_to do |format|
       if @user.save
         # Redirecting to users index page after creating new user

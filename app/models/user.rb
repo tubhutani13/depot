@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :line_items, through: :orders
   has_one :address, as: :addressable, dependent: :destroy
   validates :name, presence: true, uniqueness: true
+  has_one :hit_count, dependent: :nullify
   
 
   # Validates that the two passwords match in field
@@ -24,7 +25,7 @@ class User < ApplicationRecord
   end
 
   def admin?
-    email == ADMIN_EMAIL
+   role == "admin"
   end
 
   private def ensure_not_admin
