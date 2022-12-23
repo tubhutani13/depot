@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :ratings
   root 'store#index', as: 'store_index'
   match '*path', to: redirect('404'), via: :all, constraints: -> (req) { req.headers['User-Agent'] =~ FIREFOX_BROWSER_REGEX }
   controller :sessions do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_23_100321) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_23_103918) do
   create_table "action_mailbox_inbound_emails", force: :cascade do |t|
     t.integer "status", default: 0, null: false
     t.string "message_id", null: false
@@ -127,6 +127,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_23_100321) do
     t.string "permalink"
     t.integer "category_id"
     t.index ["category_id"], name: "index_products_on_category_id"
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.float "rating"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "support_requests", force: :cascade do |t|

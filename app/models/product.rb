@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   has_many :line_items
   # specifying indirect relationship through another entity
   has_many :orders, through: :line_items
+  has_many :ratings, dependent: :destroy
 
   before_destroy :ensure_not_referenced_by_any_line_item
 

@@ -38,6 +38,6 @@ class ApplicationController < ActionController::Base
     @client_ip = request.ip
   end
   protected def setup_locale(&action)
-    I18n.with_locale(User.languages[@logged_in_user.language || :en], &action)
+    I18n.with_locale(User.languages[@logged_in_user.try(:language) || :en], &action)
   end
 end
