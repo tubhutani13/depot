@@ -15,6 +15,12 @@
     <header class="main">
       <%= image_tag('logo.svg', alt: 'The Pragmatic Bookshelf') %>
       <h1><%= @page_title %></h1>
+      <% if @logged_in_user %>
+        <%= form_with url: user_language_path do |form|%>
+          <%= form.label :language, 'Preferred Language: ' %>
+          <%= form.select :language, User.languages, { selected: User.languages[@logged_in_user.language] }, :onChange => 'javascript: this.form.submit()' %>
+        <% end %>
+      <% end %>
     </header>
     <section class="content">
       <nav class="side_nav">

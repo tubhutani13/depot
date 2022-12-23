@@ -8,10 +8,11 @@ class ApplicationController < ActionController::Base
   before_action :update_hit_counter, only: [:index, :show, :edit, :new]
   before_action :authorize
   before_action :attach_ip_in_header
+  around_action :setup_locale
 
   protected def authorize
     unless current_user
-      redirect_to login_url, alert: "Please log in before proceeding."
+      redirect_to login_url, notice: t('flash.session.login')
     end
   end
 
@@ -35,5 +36,8 @@ class ApplicationController < ActionController::Base
 
   protected def attach_ip_in_header
     @client_ip = request.ip
+  end
+  protected def setup_locale(&action)
+    I18n.with_locale(User.languages[@logged_in_user.language || :en], &action)
   end
 end

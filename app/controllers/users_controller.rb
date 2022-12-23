@@ -72,6 +72,12 @@ class UsersController < ApplicationController
     redirect_to users_urls, notice: exception.message
   end
 
+  def language
+    @logged_in_user.update(language: params[:language])
+
+    redirect_to request.referrer
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

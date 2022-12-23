@@ -32,5 +32,5 @@ Rails.application.routes.draw do
     resources :products, path: '/books', as: 'books', to: redirect('/')
   end
 
-
+  post 'language', to: 'users#language', as: 'user_language'
 end

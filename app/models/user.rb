@@ -1,4 +1,9 @@
 class User < ApplicationRecord
+enum language: {
+  'English' => 'en',
+  'Hindi' => 'hi'
+}
+
   has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
   has_one :address, as: :addressable, dependent: :destroy
@@ -14,7 +19,7 @@ class User < ApplicationRecord
   before_destroy :ensure_not_admin
   before_update :ensure_not_admin
   after_create_commit :send_welcome_mail
-
+  validates :language, inclusion: languages.keys
   validates :email, uniqueness: true, format: { with: EMAIL_REGEX }
   
 
