@@ -1,5 +1,8 @@
+
+
 class SessionsController < ApplicationController
   skip_before_action :authorize
+  skip_before_action :logout_if_inactive
   
   def new
   end
@@ -7,18 +10,20 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(name: params[:name])
 
-    # Only calling authenticate method if password field not nil
     if user.try(:authenticate, params[:password])
-      # If successful authentication then store user_id in session
       session[:user_id] = user.id
-      redirect_to admin_url
+      session[:last_request_time] = Time.current
+      if user.admin?
+        redirect_to admin_path
+      else
+        redirect_to store_index_path
+      end
     else
       redirect_to login_url, alert: "Invalid user/password combination"
     end
   end
 
   def destroy
-    session[:user_id] = nil
-    redirect_to store_index_url, notice: "Logged out"
+    logout
   end
 end

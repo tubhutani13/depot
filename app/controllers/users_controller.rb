@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @user.build_address
   end
 
   # GET /users/1/edit
@@ -22,7 +23,8 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
-
+    @user.build_hit_count
+    
     respond_to do |format|
       if @user.save
         # Redirecting to users index page after creating new user
@@ -70,6 +72,12 @@ class UsersController < ApplicationController
     redirect_to users_urls, notice: exception.message
   end
 
+  def language
+    @logged_in_user.update(language: params[:language])
+
+    redirect_to request.referrer
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -78,6 +86,9 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :password, :password_confirmation)
+      params.require(:user).permit(
+        :name, :password, :password_confirmation, :email,
+        address_attributes: [ :state, :country, :city, :pincode ]
+      )
     end
 end

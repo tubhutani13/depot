@@ -18,7 +18,14 @@ body {
   margin: 0;
   padding: 0;
 }
-
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  form {
+    margin-right: 20px;
+  }
+}
 header.main {
   text-align: center;
   @media (min-width: 30em) {

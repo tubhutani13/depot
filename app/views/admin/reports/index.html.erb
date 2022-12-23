@@ -1,0 +1,22 @@
+<h1>Reports Page</h1>
+
+<% if notice %>
+  <aside id="notice"><%= notice %></aside>
+<% end %>
+<%= form_with url: admin_reports_path, method: :get do |form| %>
+  <div>
+    <%= form.label :from %>
+    <%= form.date_field :from, value: @from %>
+  </div>
+
+  <div>
+    <%= form.label :to %>
+    <%= form.date_field :to, value: @to %>
+  </div>
+
+  <%= form.submit 'Filter Orders' %>
+<% end %>
+
+<div id="orders">
+  <%= render partial: 'order', collection: @orders %>
+</div>

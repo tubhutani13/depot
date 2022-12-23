@@ -1,0 +1,57 @@
+hi:
+  hello: 'नमस्ते'
+
+  errors:
+    format: "%{attribute} %{message}"
+
+    messages: &errors_messages
+      inclusion: "सूची में शामिल नहीं है"
+      exclusion: "आरक्षित है"
+      invalid: "अवैध है"
+      confirmation: "पुष्टिकरण मेल नहीं खाता"
+      accepted: "स्वीकार किया जाना जरूरी"
+      empty: "रिक्त नहीं रह सकता है"
+      blank: "खाली नहीं रह सकता है"
+      too_long: "अत्यधिक लंबा है (अधिकतम %{count} वर्ण हैं)"
+      too_short: "अत्यधिक छोटा है (न्यूनतम %{count} वर्ण हैं)"
+      wrong_length: "गलत लंबाई है (%{count} वर्ण युक्त होना चाहिए)"
+      not_a_number: "कोई संख्या नहीं है"
+      not_an_integer: "एक पूर्णांक होना चाहिए"
+      greater_than: "%{count} से अधिक होना चाहिए"
+      greater_than_or_equal_to: "%{count} से बड़ा या बराबर होना आवश्यक है"
+      equal_to: "%{count} के लिए बराबर होना चाहिए"
+      less_than: "%{count} से कम होना चाहिए"
+      less_than_or_equal_to: "%{count} से कम या बराबर होना आवश्यक है"
+      odd: "विसम होना चाहिए"
+      even: "सम होना चाहिए"
+      required: 'चाहिए'
+
+  activerecord:
+    errors:
+      template:
+        header:
+          one:    "इस %{model} को सहेजे जाना एक त्रुटि के कारण नहीं हुआ"
+          other:  "इस %{model} को सहेजे जाना %{count} त्रुटि के कारण नहीं हुआ"
+        body: "निम्नलिखित क्षेत्रों के साथ समस्या थी:"
+
+      messages:
+        taken: "पहले ही ले लिया गया है"
+        record_invalid: "सत्यापन विफल: %{errors}"
+        <<: *errors_messages
+
+      full_messages:
+        format: "%{attribute}%{message}"
+
+  flash:    
+    session:
+      login: 'कृपया लॉगिन करें'
+      no_privilege: 'आपको इस अनुभाग तक पहुंचने का विशेषाधिकार नहीं है'
+
+    notice:
+      successfull_create: 'सफलतापूर्वक बनाया गया था।'
+      successfull_update: 'सफलतापूर्वक अपडेट किया गया था।'
+      successfull_destroy: 'सफलतापूर्वक नष्ट कर दिया गया था।'
+      thank_you_for_order: 'आपके ऑर्डर के लिए धन्यवाद।'
+
+    alert:
+      login_before_order: 'आदेश देने से पहले कृपया लॉगिन करें'

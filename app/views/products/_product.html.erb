@@ -1,22 +1,38 @@
-<div id="<%= dom_id product %>">
-  <p>
-    <strong>Title:</strong>
-    <%= product.title %>
-  </p>
-
-  <p>
-    <strong>Description:</strong>
-    <%= product.description %>
-  </p>
-
-  <p>
-    <strong>Image url:</strong>
-    <%= product.image_url %>
-  </p>
-
-  <p>
-    <strong>Price:</strong>
-    <%= product.price %>
-  </p>
-
-</div>
+<tr id="<%= dom_id product %>" class="<%= cycle('list_line_odd', 'list_line_even') %>">
+  <td class="description">
+    <h1><%= product.title %></h1>
+    <div>Users Ratings: <%= average_rating(product) %></div>
+    <%= form_with url: ratings_path, method: :post, local: false do |form| %>
+      <%= form.hidden_field :product_id, value: product.id %>
+      <%= form.select :rating, generate_ratings, selected: current_product_rating_by_user(product.ratings, @logged_in_user) %>
+      <%= form.submit 'Submit Rating' %>
+    <% end %>
+    <h3>Product Images</h3>
+    <div class="image-container">
+      <% if first_image %>
+        <%= image_tag generate_image_url(product.images[0]), width: '250', height: '250' %>
+      <% else %>
+        <% product.images.each do |image| %>
+          <%= image_tag generate_image_url(image), width: '250', height: '250' %>
+        <% end %>
+      <% end %>
+    </div>
+    <p>
+      <%= format_html_to_overview(product.description, length: 80) %>
+    </p>
+  </td>
+  <td class="actions">
+    <ul>
+      <li><%= link_to 'Show', product %></li>
+      <li><%= link_to 'Edit', edit_product_path(product) %></li>
+      <li>
+        <%= 
+          link_to('Destroy',
+            product,
+            method: :delete,
+            data: { confirm: 'Are you sure?' })
+        %>
+      </li>
+    </ul>
+  </td>
+</tr>

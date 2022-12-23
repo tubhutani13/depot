@@ -31,3 +31,17 @@
 
 en:
   hello: "Hello world"
+  form:
+    select:
+      include_blank: "Select One"
+  flash:
+    session:
+      login: "Please log in"
+      no_privilege: "You don't have privilege to access this section"
+    notice:
+      successfull_create: "was successfully created"
+      successfull_update: "was successfully updated"
+      successfull_destroy: "was successfully destroyed"
+      thank_you_for_order: "Thank you for placing order"
+    alert:
+      login_before_order: "Please login before placing order"
