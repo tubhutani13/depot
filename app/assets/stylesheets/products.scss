@@ -54,4 +54,18 @@
   .form-errors {
     color: red;
   }
+  .image-container {
+    width: 300px;
+    height: 300px;
+    overflow-y: scroll;
+    scrollbar-color: white black;
+    border: black 2px solid;
+    img {
+      float: left;
+      padding: 1em;
+      margin-right: 1em;
+      margin-bottom: 1em;
+      box-shadow: 0.176em 0.176em 0.354em 0px rgba(0, 0, 0, 0.75);
+    }
+  }
 }

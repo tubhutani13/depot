@@ -3,38 +3,37 @@
   <head>
     <title>Pragprog Books Online Store</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-
     <%# Prevents cross-site request forgery attacks %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%# Generates link tag to application stylesheet %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-
     <%# Generates script tag to load application scripts %>
-    <%= javascript_importmap_tags %>    
+    <%= javascript_importmap_tags %>
   </head>
-
   <body>
     <header class="main">
       <%= image_tag('logo.svg', alt: 'The Pragmatic Bookshelf') %>
       <h1><%= @page_title %></h1>
+      <% if @logged_in_user %>
+        <%= form_with url: user_language_path do |form|%>
+          <%= form.label :language, 'Preferred Language: ' %>
+          <%= form.select :language, User.languages, { selected: User.languages[@logged_in_user.language] }, :onChange => 'javascript: this.form.submit()' %>
+        <% end %>
+      <% end %>
     </header>
-
     <section class="content">
       <nav class="side_nav">
         <div id="cart" class="carts">
           <%# Using Partials and Helper to render cart %>
           <%= render_if @cart && @cart.line_items.any?, @cart %>
         </div>
-
         <ul>
           <li><a href="/">Home</a></li>
-          <li><a href="/questions">Questions</a></li>
+          <li><a href="/login">Login</a></li>
           <li><a href="/news">News</a></li>
           <li><a href="/contact">Contact</a></li>
         </ul>
-
         <% if session[:user_id] %>
           <nav class="logged_in_nav">
             <ul>
@@ -46,12 +45,15 @@
           </nav>
         <% end %>
       </nav>
-      
       <main class="<%= controller.controller_name %>">
         <%# Used by components to render views %>
         <%= yield %>
       </main>
     </section>
-
+    <footer>
+      <div>Your Hit Count: <%= @user_hit_count || '-' %></div>
+      <div>Total Hit Count: <%= @total_hit_count %></div>
+      <div>Your Ip Address: <%= @client_ip %></div>
+    </footer>
   </body>
 </html>

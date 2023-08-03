@@ -1,7 +1,9 @@
 class Product < ApplicationRecord
+  belongs_to :category, counter_cache: true
   has_many :line_items
   # specifying indirect relationship through another entity
   has_many :orders, through: :line_items
+  has_many :ratings, dependent: :destroy
 
   before_destroy :ensure_not_referenced_by_any_line_item
 
@@ -36,16 +38,13 @@ class Product < ApplicationRecord
             allow_blank: true
 
   before_validation :default_title_value
-  before_validation :default_discount_price
+  before_validation :default_discount_value
 
-  private def ensure_not_referenced_by_any_line_item
-    unless line_items.empty?
-      # same object used by validations to store errors
-      errors.add(:base, "Line Items present")
-
-      throw :abort
-    end
-  end
+  after_create_commit :increment_parent_category_products_count, if: :category_parent_present?
+  after_destroy_commit :decrement_parent_category_products_count, if: :category_parent_present?
+  scope :enabled_products, -> { where(enabled: true) }
+  scope :product_ordered, -> { joins(:line_items).distinct }
+  scope :ordered_titles, -> { product_ordered.pluck(:title) }
 
   private def words_in_description
     description.scan(DESCRIPTION_WORDS_REGEX)
@@ -61,5 +60,17 @@ class Product < ApplicationRecord
 
   private def default_discount_value
     self.discount_price ||= self.price
+  end
+
+  private def increment_parent_category_products_count
+    category.parent.increment!(:products_count)
+  end
+
+  private def decrement_parent_category_products_count
+    category.parent.increment!(:products_count)
+  end
+
+  private def category_parent_present?
+    category.present? && category.parent.present?
   end
 end

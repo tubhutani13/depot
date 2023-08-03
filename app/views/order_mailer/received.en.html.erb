@@ -1,0 +1,13 @@
+<h3>Pragmatice Order Shipped</h3>
+<p>
+  This is just to let you know that we've shipped your recent order
+</p>
+
+<table>
+  <tr>
+    <th colspan="2">Qty</th>
+    <th>Description</th>
+  </tr>
+
+  <%= render partial: 'order_mailer/line_item', collection: @order.line_items -%>
+</table>

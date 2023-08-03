@@ -1,0 +1,13 @@
+<h3>Pragmatic ऑर्डर भेज दिया</h3>
+<p>
+  यह केवल आपको यह बताने के लिए है कि हमने आपका हालिया आदेश भेज दिया है
+</p>
+
+<table>
+  <tr>
+    <th colspan="2">मात्रा</th>
+    <th>विवरण</th>
+  </tr>
+
+  <%= render partial: 'order_mailer/line_item', collection: @order.line_items -%>
+</table>

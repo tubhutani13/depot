@@ -1,5 +1,15 @@
 class User < ApplicationRecord
+enum language: {
+  'English' => 'en',
+  'Hindi' => 'hi'
+}
+
+  has_many :orders, dependent: :destroy
+  has_many :line_items, through: :orders
+  has_one :address, as: :addressable, dependent: :destroy
   validates :name, presence: true, uniqueness: true
+  has_one :hit_count, dependent: :nullify
+  
 
   # Validates that the two passwords match in field
   has_secure_password
@@ -9,8 +19,9 @@ class User < ApplicationRecord
   before_destroy :ensure_not_admin
   before_update :ensure_not_admin
   after_create_commit :send_welcome_mail
-
+  validates :language, inclusion: languages.keys
   validates :email, uniqueness: true, format: { with: EMAIL_REGEX }
+  
 
   private def ensure_an_admin_remains
     if User.count.zero?
@@ -19,7 +30,7 @@ class User < ApplicationRecord
   end
 
   def admin?
-    email == ADMIN_EMAIL
+   role == "admin"
   end
 
   private def ensure_not_admin
